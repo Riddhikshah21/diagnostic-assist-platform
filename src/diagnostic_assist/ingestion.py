@@ -7,7 +7,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy import case
 from diagnostic_assist.db_models import HistoricalCaseRecord
 from diagnostic_assist.models import HistoricalCase
-
+from diagnostic_assist.retrieval import tokenize
 
 def import_cases(
     engine: Engine,
@@ -35,6 +35,9 @@ def import_cases(
         {
             **case.model_dump(),
             "organisation_id": organisation_id,
+            "search_text": " ".join(
+                tokenize(case.customer_description)
+            ),
         }
         for case in cases
     ]

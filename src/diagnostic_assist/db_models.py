@@ -5,7 +5,8 @@ from pgvector.sqlalchemy import VECTOR
 from sqlalchemy import DateTime, Index, String, Text, func, text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-
+from sqlalchemy import Computed
+from sqlalchemy.dialects.postgresql import TSVECTOR
 
 class Base(DeclarativeBase):
     pass
@@ -65,6 +66,20 @@ class HistoricalCaseRecord(Base):
         server_default=func.now(),
     )
 
+    search_text: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        server_default=text("''"),
+    )
+
+    search_vector: Mapped[str] = mapped_column(
+        TSVECTOR,
+        Computed(
+            "to_tsvector('simple'::regconfig, search_text)",
+            persisted=True,
+        ),
+        nullable=False,
+    )
     __table_args__ = (
         Index(
             "ix_historical_cases_org_type",
@@ -75,5 +90,10 @@ class HistoricalCaseRecord(Base):
             "ix_historical_cases_org_family",
             "organisation_id",
             "equipment_family",
+        ),
+        Index(
+            "ix_historical_cases_search_vector",
+            "search_vector",
+            postgresql_using="gin",
         ),
     )

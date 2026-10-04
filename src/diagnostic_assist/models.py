@@ -49,7 +49,7 @@ class SearchHit(BaseModel):
     """One result returned by BM25 or semantic search."""
 
     case_id: str = Field(min_length=1)
-    source: RetrievalSource
+    source: Literal["bm25", "keyword", "semantic"]
     rank: int = Field(ge=1)
     score: float
 
@@ -65,7 +65,7 @@ class EvidenceHit(BaseModel):
     @field_validator("source_ranks")
     @classmethod
     def validate_source_ranks(cls, ranks: dict[str, int]) -> dict[str, int]:
-        allowed_sources = {"bm25", "semantic"}
+        allowed_sources = {"bm25", "keyword", "semantic"}
 
         if not set(ranks).issubset(allowed_sources):
             raise ValueError("source_ranks contains an unknown retrieval source")

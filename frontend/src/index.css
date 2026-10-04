@@ -1,0 +1,102 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #172033;
+  background: #f4f6f9;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.workspace {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #dce2ea;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #aeb9c8;
+  border-radius: 6px;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  background: #2458c6;
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  padding: 12px 18px;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 3px solid #83afff;
+  outline-offset: 2px;
+}
+
+.case-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h3 {
+  margin: 0;
+}
+
+h4 {
+  margin-bottom: 4px;
+}
+
+p {
+  overflow-wrap: anywhere;
+}
+
+.muted {
+  color: #526078;
+}
+
+.error {
+  color: #a31919;
+}
+
+.notice {
+  padding: 12px;
+  background: #fff3cf;
+  border-radius: 6px;
+}

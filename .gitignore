@@ -11,5 +11,6 @@ dist/
 build/
 *.egg-info/
 .DS_Store
+node_modules/
 data/Diagnostic Assist Take-Home.docx
 .env

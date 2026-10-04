@@ -11,7 +11,12 @@ dependencies = [
     "numpy>=1.26",
     "pydantic>=2.7,<3",
     "rank-bm25>=0.2.2",
-    "sentence-transformers>=3,<6"
+    "sentence-transformers>=3,<6",
+    "SQLAlchemy>=2.0,<2.1",
+    "psycopg[binary]>=3.1,<4",
+    "python-dotenv>=1.0,<2",
+    "alembic>=1.13,<2",
+    "pgvector>=0.3,<1"
 ]
 
 [project.optional-dependencies]

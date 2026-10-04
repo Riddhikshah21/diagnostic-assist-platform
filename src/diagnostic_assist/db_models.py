@@ -7,7 +7,15 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Computed
 from sqlalchemy.dialects.postgresql import TSVECTOR
+from uuid import UUID, uuid4
 
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    ForeignKeyConstraint,
+    Integer,
+    Uuid,
+)
 class Base(DeclarativeBase):
     pass
 
@@ -95,5 +103,109 @@ class HistoricalCaseRecord(Base):
             "ix_historical_cases_search_vector",
             "search_vector",
             postgresql_using="gin",
+        ),
+    )
+
+class DiagnosticSessionRecord(Base):
+    __tablename__ = "diagnostic_sessions"
+
+    organisation_id: Mapped[str] = mapped_column(
+        String,
+        primary_key=True,
+    )
+    session_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True),
+        primary_key=True,
+        default=uuid4,
+    )
+
+    equipment_type: Mapped[str] = mapped_column(String)
+    initial_description: Mapped[str] = mapped_column(Text)
+
+    status: Mapped[str] = mapped_column(
+        String,
+        server_default=text("'active'"),
+        nullable=False,
+    )
+
+    revision: Mapped[int] = mapped_column(
+        Integer,
+        server_default=text("1"),
+        nullable=False,
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('active', 'completed')",
+            name="ck_diagnostic_sessions_status",
+        ),
+        CheckConstraint(
+            "revision > 0",
+            name="ck_diagnostic_sessions_revision",
+        ),
+        Index(
+            "ix_diagnostic_sessions_org_created",
+            "organisation_id",
+            "created_at",
+        ),
+    )
+
+
+class SessionObservationRecord(Base):
+    __tablename__ = "session_observations"
+
+    observation_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True),
+        primary_key=True,
+        default=uuid4,
+    )
+    organisation_id: Mapped[str] = mapped_column(String)
+    session_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True))
+
+    question: Mapped[str | None] = mapped_column(Text)
+    answer: Mapped[str | None] = mapped_column(Text)
+
+    is_unknown: Mapped[bool] = mapped_column(
+        Boolean,
+        server_default=text("false"),
+        nullable=False,
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["organisation_id", "session_id"],
+            [
+                "diagnostic_sessions.organisation_id",
+                "diagnostic_sessions.session_id",
+            ],
+            name="fk_session_observations_session",
+            ondelete="CASCADE",
+        ),
+        CheckConstraint(
+            "(is_unknown AND answer IS NULL) OR "
+            "(NOT is_unknown AND answer IS NOT NULL "
+            "AND length(btrim(answer)) > 0)",
+            name="ck_session_observations_answer",
+        ),
+        Index(
+            "ix_session_observations_session_created",
+            "organisation_id",
+            "session_id",
+            "created_at",
         ),
     )

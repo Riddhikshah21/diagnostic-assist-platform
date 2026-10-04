@@ -100,3 +100,38 @@ p {
   background: #fff3cf;
   border-radius: 6px;
 }
+.form-fields {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.checkbox-row input {
+  width: auto;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.session-id {
+  font-family: ui-monospace, monospace;
+  overflow-wrap: anywhere;
+}
+
+.observation {
+  border-top: 1px solid #dce2ea;
+  padding-top: 12px;
+  margin-top: 12px;
+}

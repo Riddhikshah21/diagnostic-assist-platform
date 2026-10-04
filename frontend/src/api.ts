@@ -45,3 +45,107 @@ export async function searchCases(
 
   return response.json()
 }
+
+export interface SessionObservation {
+  observation_id: string
+  question: string | null
+  answer: string | null
+  is_unknown: boolean
+  created_at: string
+}
+
+export interface DiagnosticSession {
+  session_id: string
+  equipment_type: string
+  initial_description: string
+  status: 'active' | 'completed'
+  revision: number
+  created_at: string
+  updated_at: string
+  observations: SessionObservation[]
+}
+
+export interface SessionEvidenceResponse {
+  session_id: string
+  revision: number
+  evidence: SearchResponse
+}
+
+export interface ObservationInput {
+  question: string | null
+  answer: string | null
+  is_unknown: boolean
+}
+
+async function sessionRequest<T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
+  let response: Response
+
+  try {
+    response = await fetch(`/api${path}`, {
+      headers: { 'Content-Type': 'application/json' },
+      ...options,
+    })
+  } catch {
+    throw new Error('Unable to reach the service. Please try again.')
+  }
+
+  if (!response.ok) {
+    const payload: { detail?: unknown } | null = await response
+      .json()
+      .catch(() => null)
+
+    const message =
+      typeof payload?.detail === 'string'
+        ? payload.detail
+        : 'The request failed. Please check the information and try again.'
+
+    throw new Error(message)
+  }
+
+  return response.json() as Promise<T>
+}
+
+export function createSession(
+  equipmentType: string,
+  initialDescription: string,
+): Promise<DiagnosticSession> {
+  return sessionRequest('/sessions', {
+    method: 'POST',
+    body: JSON.stringify({
+      equipment_type: equipmentType,
+      initial_description: initialDescription,
+    }),
+  })
+}
+
+export function loadSession(
+  sessionId: string,
+): Promise<DiagnosticSession> {
+  return sessionRequest(
+    `/sessions/${encodeURIComponent(sessionId)}`,
+  )
+}
+
+export function loadSessionEvidence(
+  sessionId: string,
+): Promise<SessionEvidenceResponse> {
+  return sessionRequest(
+    `/sessions/${encodeURIComponent(sessionId)}/evidence`,
+  )
+}
+
+export function saveObservation(
+  sessionId: string,
+  observation: ObservationInput,
+): Promise<DiagnosticSession> {
+  return sessionRequest(
+    `/sessions/${encodeURIComponent(sessionId)}/observations`,
+    {
+      method: 'POST',
+      body: JSON.stringify(observation),
+    },
+  )
+}

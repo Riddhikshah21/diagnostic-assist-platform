@@ -1,186 +1,208 @@
-from collections import defaultdict
-from dataclasses import dataclass
+"""Compare fusion settings on development or validation queries."""
+
+import argparse
+import json
+from dataclasses import asdict
 from itertools import product
+from pathlib import Path
 
-from evaluate_retrieval import DATA_FILE, EVALUATION_CASES
-
-from diagnostic_assist.loader import load_cases
+from diagnostic_assist.evaluation import (
+    EvaluationLoadError,
+    load_evaluation_queries,
+)
+from diagnostic_assist.loader import CaseLoadError, load_cases
+from diagnostic_assist.metrics import score_ranking
 from diagnostic_assist.retrieval import (
     KeywordIndex,
     SemanticIndex,
     SentenceTransformerEmbedder,
+    reciprocal_rank_fusion,
 )
 
-CROSS_LANGUAGE_TARGETS = {
-    "C-48211": "C-48377",
-    "C-48604": "C-48755",
-    "C-48899": "C-49266",
-    "C-49402": "C-49480",
-}
+ROOT = Path(__file__).resolve().parents[1]
 
 
-@dataclass(frozen=True)
-class RankedCandidate:
-    case_id: str
-    score: float
-
-
-def weighted_rrf(
-    keyword_hits,
-    semantic_hits,
-    candidate_depth: int,
-    semantic_weight: float,
-    rank_constant: int = 60,
-) -> list[RankedCandidate]:
-    scores: defaultdict[str, float] = defaultdict(float)
-
-    for hit in keyword_hits[:candidate_depth]:
-        scores[hit.case_id] += 1 / (rank_constant + hit.rank)
-
-    for hit in semantic_hits[:candidate_depth]:
-        scores[hit.case_id] += semantic_weight / (rank_constant + hit.rank)
-
-    return sorted(
-        (RankedCandidate(case_id=case_id, score=score) for case_id, score in scores.items()),
-        key=lambda candidate: (
-            -candidate.score,
-            candidate.case_id,
-        ),
-    )
+def mean_or_none(values):
+    return sum(values) / len(values) if values else None
 
 
 def main() -> None:
-    cases = load_cases(DATA_FILE)
-    cases_by_id = {case.case_id: case for case in cases}
+    parser = argparse.ArgumentParser(
+        description="Compare RRF settings without using the test split."
+    )
+    parser.add_argument(
+        "--data",
+        type=Path,
+        default=ROOT / "tests/fixtures/synthetic_cases.json",
+    )
+    parser.add_argument(
+        "--queries",
+        type=Path,
+        default=ROOT / "evaluation/queries.json",
+    )
+    parser.add_argument(
+        "--split",
+        choices=["development", "validation"],
+        default="development",
+    )
+    parser.add_argument("--k", type=int, default=5)
+    parser.add_argument(
+        "--depths",
+        type=int,
+        nargs="+",
+        default=[3, 5, 10],
+    )
+    parser.add_argument(
+        "--weights",
+        type=float,
+        nargs="+",
+        default=[1.0, 2.0, 3.0],
+    )
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
 
-    print("Loading multilingual embedding model...")
-    embedder = SentenceTransformerEmbedder()
+    if args.k < 1 or any(depth < 1 for depth in args.depths):
+        parser.error("k and candidate depths must be positive")
 
-    keyword_index = KeywordIndex(cases)
-    semantic_index = SemanticIndex(cases, embedder)
+    if any(not 0 < weight < float("inf") for weight in args.weights):
+        parser.error("Weights must be finite and positive")
 
-    prepared_results = {}
+    try:
+        cases = load_cases(args.data)
+        queries = load_evaluation_queries(args.queries, cases)
+    except (CaseLoadError, EvaluationLoadError) as exc:
+        parser.error(str(exc))
 
-    for evaluation in EVALUATION_CASES:
-        query_case = cases_by_id[evaluation.query_case_id]
+    queries = [query for query in queries if query.split == args.split]
 
-        candidate_ids = {
+    if not queries:
+        parser.error(f"No queries found for split: {args.split}")
+
+    candidates_by_query = {}
+
+    for query in queries:
+        candidates = {
             case.case_id
             for case in cases
-            if (
-                case.equipment_type == query_case.equipment_type
-                and case.case_id != query_case.case_id
-            )
+            if case.equipment_type == query.equipment_type
+            and case.case_id not in query.exclude_case_ids
         }
 
-        keyword_hits = keyword_index.search(
-            query=query_case.customer_description,
-            candidate_ids=candidate_ids,
-            limit=len(candidate_ids),
-        )
-        semantic_hits = semantic_index.search(
-            query=query_case.customer_description,
-            candidate_ids=candidate_ids,
-            limit=len(candidate_ids),
-        )
+        outside_scope = set(query.relevant_case_ids) - candidates
 
-        prepared_results[evaluation.query_case_id] = (
-            candidate_ids,
-            keyword_hits,
-            semantic_hits,
-        )
-
-        print()
-        print("=" * 90)
-        print(f"Semantic top five for {evaluation.query_case_id}")
-        print(f"{'Rank':<7}{'Case':<10}{'Lang':<8}{'Expected':<11}{'Score':<10}Description")
-
-        for hit in semantic_hits[:5]:
-            case = cases_by_id[hit.case_id]
-            expected = "yes" if hit.case_id in evaluation.relevant_case_ids else "no"
-
-            print(
-                f"{hit.rank:<7}"
-                f"{hit.case_id:<10}"
-                f"{case.language:<8}"
-                f"{expected:<11}"
-                f"{hit.score:<10.4f}"
-                f"{case.customer_description}"
+        if outside_scope:
+            parser.error(
+                f"{query.query_id}: relevant cases outside exact-type scope: "
+                + ", ".join(sorted(outside_scope))
             )
 
-    configurations = list(
-        product(
-            (3, 5, 10),
-            (1.0, 2.0, 3.0),
+        candidates_by_query[query.query_id] = candidates
+
+    print("Building indexes with the real multilingual model...")
+
+    keyword = KeywordIndex(cases)
+    semantic = SemanticIndex(cases, SentenceTransformerEmbedder())
+
+    # Retrieve once, then reuse candidates for every configuration.
+    prepared = {}
+
+    for query in queries:
+        candidate_ids = candidates_by_query[query.query_id]
+
+        prepared[query.query_id] = (
+            keyword.search(
+                query.query,
+                candidate_ids=candidate_ids,
+                limit=max(args.depths),
+            ),
+            semantic.search(
+                query.query,
+                candidate_ids=candidate_ids,
+                limit=max(args.depths),
+            ),
         )
-    )
 
-    print()
-    print("=" * 90)
-    print("Fusion comparison")
-    print(
-        f"{'Depth':<8}"
-        f"{'Semantic weight':<18}"
-        f"{'Recall@5':<12}"
-        f"{'Precision@5':<15}"
-        f"{'Cross-lang hit':<16}"
-        f"{'Cross-lang MRR':<15}"
-    )
+    results = []
 
-    for candidate_depth, semantic_weight in configurations:
-        recalls: list[float] = []
-        precisions: list[float] = []
-        cross_language_hits: list[float] = []
-        reciprocal_ranks: list[float] = []
+    for depth, weight in product(args.depths, args.weights):
+        query_results = []
 
-        for evaluation in EVALUATION_CASES:
-            (
-                candidate_ids,
-                keyword_hits,
-                semantic_hits,
-            ) = prepared_results[evaluation.query_case_id]
+        for query in queries:
+            keyword_hits, semantic_hits = prepared[query.query_id]
 
-            fused = weighted_rrf(
-                keyword_hits=keyword_hits,
-                semantic_hits=semantic_hits,
-                candidate_depth=candidate_depth,
-                semantic_weight=semantic_weight,
+            fused = reciprocal_rank_fusion(
+                [keyword_hits[:depth], semantic_hits[:depth]],
+                source_weights={"bm25": 1.0, "semantic": weight},
+            )
+            case_ids = [hit.case_id for hit in fused[:args.k]]
+
+            query_results.append(
+                {
+                    "query_id": query.query_id,
+                    "case_ids": case_ids,
+                    "metrics": asdict(
+                        score_ranking(
+                            case_ids,
+                            query.relevant_case_ids,
+                            k=args.k,
+                        )
+                    ),
+                }
             )
 
-            top_five = [candidate.case_id for candidate in fused[:5]]
+        positive = [
+            row["metrics"]
+            for row in query_results
+            if not row["metrics"]["is_negative_query"]
+        ]
+        negative = [
+            row["metrics"]
+            for row in query_results
+            if row["metrics"]["is_negative_query"]
+        ]
 
-            relevant_found = set(top_five) & evaluation.relevant_case_ids
+        summary = {
+            "candidate_depth": depth,
+            "semantic_weight": weight,
+            "positive_queries": len(positive),
+            "negative_queries": len(negative),
+            "precision_at_k": mean_or_none(
+                [row["precision_at_k"] for row in positive]
+            ),
+            "recall_at_k": mean_or_none(
+                [row["recall_at_k"] for row in positive]
+            ),
+            "mrr_at_k": mean_or_none(
+                [row["reciprocal_rank_at_k"] for row in positive]
+            ),
+            "negative_query_return_rate": mean_or_none(
+                [float(row["has_results"]) for row in negative]
+            ),
+        }
 
-            recall = len(relevant_found) / len(evaluation.relevant_case_ids)
-            denominator = min(5, len(candidate_ids))
-            precision = len(relevant_found) / denominator
-
-            target_id = CROSS_LANGUAGE_TARGETS[evaluation.query_case_id]
-
-            if target_id in top_five:
-                target_rank = top_five.index(target_id) + 1
-                cross_language_hits.append(1.0)
-                reciprocal_ranks.append(1 / target_rank)
-            else:
-                cross_language_hits.append(0.0)
-                reciprocal_ranks.append(0.0)
-
-            recalls.append(recall)
-            precisions.append(precision)
-
-        average_recall = sum(recalls) / len(recalls)
-        average_precision = sum(precisions) / len(precisions)
-        cross_language_hit_rate = sum(cross_language_hits) / len(cross_language_hits)
-        cross_language_mrr = sum(reciprocal_ranks) / len(reciprocal_ranks)
-
-        print(
-            f"{candidate_depth:<8}"
-            f"{semantic_weight:<18.1f}"
-            f"{average_recall:<12.2f}"
-            f"{average_precision:<15.2f}"
-            f"{cross_language_hit_rate:<16.2f}"
-            f"{cross_language_mrr:<15.2f}"
+        results.append(
+            {"summary": summary, "queries": query_results}
         )
+        print(json.dumps(summary))
+
+    report = {
+        "data": str(args.data),
+        "queries": str(args.queries),
+        "split": args.split,
+        "scope": "exact_equipment_type",
+        "k": args.k,
+        "bm25_weight": 1.0,
+        "rank_constant": 60,
+        "results": results,
+    }
+
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(
+            json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        print(f"Report saved to {args.output}")
 
 
 if __name__ == "__main__":

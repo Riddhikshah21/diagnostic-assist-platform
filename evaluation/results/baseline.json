@@ -1,0 +1,467 @@
+{
+  "configuration": {
+    "data": "/Users/riddhishah/Documents/GitHub/diagnostic-assist-platform/diagnostic-assist-platform/tests/fixtures/synthetic_cases.json",
+    "queries": "/Users/riddhishah/Documents/GitHub/diagnostic-assist-platform/diagnostic-assist-platform/evaluation/queries.json",
+    "split": "development",
+    "k": 5,
+    "candidate_depth": 5,
+    "semantic_weight": 2.0,
+    "scope": "exact_equipment_type",
+    "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+  },
+  "index_setup_seconds": 28.05610816704575,
+  "summary": {
+    "bm25": {
+      "positive_queries": 5,
+      "negative_queries": 1,
+      "precision_at_k": 0.32,
+      "recall_at_k": 0.6833333333333333,
+      "mrr_at_k": 1.0,
+      "negative_query_return_rate": 0.0
+    },
+    "semantic": {
+      "positive_queries": 5,
+      "negative_queries": 1,
+      "precision_at_k": 0.5199999999999999,
+      "recall_at_k": 1.0,
+      "mrr_at_k": 1.0,
+      "negative_query_return_rate": 1.0
+    },
+    "rrf": {
+      "positive_queries": 5,
+      "negative_queries": 1,
+      "precision_at_k": 0.5199999999999999,
+      "recall_at_k": 1.0,
+      "mrr_at_k": 1.0,
+      "negative_query_return_rate": 1.0
+    }
+  },
+  "by_language": {
+    "de": {
+      "bm25": {
+        "positive_queries": 1,
+        "negative_queries": 0,
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.25,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": null
+      },
+      "semantic": {
+        "positive_queries": 1,
+        "negative_queries": 0,
+        "precision_at_k": 0.8,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": null
+      },
+      "rrf": {
+        "positive_queries": 1,
+        "negative_queries": 0,
+        "precision_at_k": 0.8,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": null
+      }
+    },
+    "en": {
+      "bm25": {
+        "positive_queries": 2,
+        "negative_queries": 1,
+        "precision_at_k": 0.4,
+        "recall_at_k": 0.8333333333333333,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 0.0
+      },
+      "semantic": {
+        "positive_queries": 2,
+        "negative_queries": 1,
+        "precision_at_k": 0.5,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      },
+      "rrf": {
+        "positive_queries": 2,
+        "negative_queries": 1,
+        "precision_at_k": 0.5,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      }
+    },
+    "fr": {
+      "bm25": {
+        "positive_queries": 1,
+        "negative_queries": 0,
+        "precision_at_k": 0.2,
+        "recall_at_k": 0.5,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": null
+      },
+      "semantic": {
+        "positive_queries": 1,
+        "negative_queries": 0,
+        "precision_at_k": 0.4,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": null
+      },
+      "rrf": {
+        "positive_queries": 1,
+        "negative_queries": 0,
+        "precision_at_k": 0.4,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": null
+      }
+    },
+    "it": {
+      "bm25": {
+        "positive_queries": 1,
+        "negative_queries": 0,
+        "precision_at_k": 0.4,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": null
+      },
+      "semantic": {
+        "positive_queries": 1,
+        "negative_queries": 0,
+        "precision_at_k": 0.4,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": null
+      },
+      "rrf": {
+        "positive_queries": 1,
+        "negative_queries": 0,
+        "precision_at_k": 0.4,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": null
+      }
+    }
+  },
+  "results": [
+    {
+      "query_id": "Q-001",
+      "query": "The compressor will not start and the control panel has no lights.",
+      "language": "en",
+      "category": "startup",
+      "equipment_type": "COMP-100",
+      "combined_search_seconds": 0.015498041990213096,
+      "rankings": {
+        "bm25": {
+          "case_ids": [
+            "S-003",
+            "S-005",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 0.6666666666666666,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        "semantic": {
+          "case_ids": [
+            "S-002",
+            "S-004",
+            "S-003",
+            "S-006",
+            "S-005"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        "rrf": {
+          "case_ids": [
+            "S-003",
+            "S-004",
+            "S-005",
+            "S-002",
+            "S-006"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        }
+      }
+    },
+    {
+      "query_id": "Q-002",
+      "query": "Der Kompressor startet nicht und das Display bleibt dunkel.",
+      "language": "de",
+      "category": "startup",
+      "equipment_type": "COMP-100",
+      "combined_search_seconds": 0.18699524994008243,
+      "rankings": {
+        "bm25": {
+          "case_ids": [
+            "S-002"
+          ],
+          "metrics": {
+            "precision_at_k": 0.2,
+            "recall_at_k": 0.25,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        "semantic": {
+          "case_ids": [
+            "S-001",
+            "S-002",
+            "S-003",
+            "S-006",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.8,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        "rrf": {
+          "case_ids": [
+            "S-002",
+            "S-001",
+            "S-003",
+            "S-006",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.8,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        }
+      }
+    },
+    {
+      "query_id": "Q-003",
+      "query": "Il compressore si surriscalda durante il funzionamento e mostra E207.",
+      "language": "it",
+      "category": "overheating",
+      "equipment_type": "COMP-100",
+      "combined_search_seconds": 0.019391375011764467,
+      "rankings": {
+        "bm25": {
+          "case_ids": [
+            "S-006",
+            "S-005"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        "semantic": {
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002",
+            "S-003",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        "rrf": {
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002",
+            "S-003",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        }
+      }
+    },
+    {
+      "query_id": "Q-004",
+      "query": "De l'huile fuit du cylindre de levage.",
+      "language": "fr",
+      "category": "hydraulic_leak",
+      "equipment_type": "LIFT-100",
+      "combined_search_seconds": 0.011629374930635095,
+      "rankings": {
+        "bm25": {
+          "case_ids": [
+            "S-007"
+          ],
+          "metrics": {
+            "precision_at_k": 0.2,
+            "recall_at_k": 0.5,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        "semantic": {
+          "case_ids": [
+            "S-008",
+            "S-007"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        "rrf": {
+          "case_ids": [
+            "S-007",
+            "S-008"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        }
+      }
+    },
+    {
+      "query_id": "Q-005",
+      "query": "The compressor is overheating with an E-207 alarm.",
+      "language": "en",
+      "category": "technical_code",
+      "equipment_type": "COMP-100",
+      "combined_search_seconds": 0.0175375419203192,
+      "rankings": {
+        "bm25": {
+          "case_ids": [
+            "S-005",
+            "S-006"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        "semantic": {
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001",
+            "S-002",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        "rrf": {
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001",
+            "S-002",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        }
+      }
+    },
+    {
+      "query_id": "Q-006",
+      "query": "Please change the billing address on my invoice.",
+      "language": "en",
+      "category": "unrelated",
+      "equipment_type": "COMP-100",
+      "combined_search_seconds": 0.1807787090074271,
+      "rankings": {
+        "bm25": {
+          "case_ids": [],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": false,
+            "is_negative_query": true
+          }
+        },
+        "semantic": {
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        },
+        "rrf": {
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        }
+      }
+    }
+  ]
+}

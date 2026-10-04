@@ -1,0 +1,68 @@
+[
+  {
+    "query_id": "Q-001",
+    "query": "The compressor will not start and the control panel has no lights.",
+    "language": "en",
+    "equipment_type": "COMP-100",
+    "equipment_family": "Demo Compressor",
+    "relevant_case_ids": ["S-002", "S-003", "S-004"],
+    "exclude_case_ids": ["S-001"],
+    "category": "startup",
+    "split": "development"
+  },
+  {
+    "query_id": "Q-002",
+    "query": "Der Kompressor startet nicht und das Display bleibt dunkel.",
+    "language": "de",
+    "equipment_type": "COMP-100",
+    "equipment_family": "Demo Compressor",
+    "relevant_case_ids": ["S-001", "S-002", "S-003", "S-004"],
+    "exclude_case_ids": [],
+    "category": "startup",
+    "split": "development"
+  },
+  {
+    "query_id": "Q-003",
+    "query": "Il compressore si surriscalda durante il funzionamento e mostra E207.",
+    "language": "it",
+    "equipment_type": "COMP-100",
+    "equipment_family": "Demo Compressor",
+    "relevant_case_ids": ["S-005", "S-006"],
+    "exclude_case_ids": [],
+    "category": "overheating",
+    "split": "development"
+  },
+  {
+    "query_id": "Q-004",
+    "query": "De l'huile fuit du cylindre de levage.",
+    "language": "fr",
+    "equipment_type": "LIFT-100",
+    "equipment_family": "Demo Lift",
+    "relevant_case_ids": ["S-007", "S-008"],
+    "exclude_case_ids": [],
+    "category": "hydraulic_leak",
+    "split": "development"
+  },
+  {
+    "query_id": "Q-005",
+    "query": "The compressor is overheating with an E-207 alarm.",
+    "language": "en",
+    "equipment_type": "COMP-100",
+    "equipment_family": "Demo Compressor",
+    "relevant_case_ids": ["S-005", "S-006"],
+    "exclude_case_ids": [],
+    "category": "technical_code",
+    "split": "development"
+  },
+  {
+    "query_id": "Q-006",
+    "query": "Please change the billing address on my invoice.",
+    "language": "en",
+    "equipment_type": "COMP-100",
+    "equipment_family": "Demo Compressor",
+    "relevant_case_ids": [],
+    "exclude_case_ids": [],
+    "category": "unrelated",
+    "split": "development"
+  }
+]

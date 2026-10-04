@@ -1,0 +1,1001 @@
+{
+  "data": "/Users/riddhishah/Documents/GitHub/diagnostic-assist-platform/diagnostic-assist-platform/tests/fixtures/synthetic_cases.json",
+  "queries": "/Users/riddhishah/Documents/GitHub/diagnostic-assist-platform/diagnostic-assist-platform/evaluation/queries.json",
+  "split": "development",
+  "scope": "exact_equipment_type",
+  "k": 5,
+  "bm25_weight": 1.0,
+  "rank_constant": 60,
+  "results": [
+    {
+      "summary": {
+        "candidate_depth": 3,
+        "semantic_weight": 1.0,
+        "positive_queries": 5,
+        "negative_queries": 1,
+        "precision_at_k": 0.48,
+        "recall_at_k": 0.95,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      },
+      "queries": [
+        {
+          "query_id": "Q-001",
+          "case_ids": [
+            "S-003",
+            "S-004",
+            "S-002",
+            "S-005"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-002",
+          "case_ids": [
+            "S-002",
+            "S-001",
+            "S-003"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 0.75,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-003",
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-004",
+          "case_ids": [
+            "S-007",
+            "S-008"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-005",
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-006",
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        }
+      ]
+    },
+    {
+      "summary": {
+        "candidate_depth": 3,
+        "semantic_weight": 2.0,
+        "positive_queries": 5,
+        "negative_queries": 1,
+        "precision_at_k": 0.48,
+        "recall_at_k": 0.95,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      },
+      "queries": [
+        {
+          "query_id": "Q-001",
+          "case_ids": [
+            "S-003",
+            "S-004",
+            "S-002",
+            "S-005"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-002",
+          "case_ids": [
+            "S-002",
+            "S-001",
+            "S-003"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 0.75,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-003",
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-004",
+          "case_ids": [
+            "S-007",
+            "S-008"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-005",
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-006",
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        }
+      ]
+    },
+    {
+      "summary": {
+        "candidate_depth": 3,
+        "semantic_weight": 3.0,
+        "positive_queries": 5,
+        "negative_queries": 1,
+        "precision_at_k": 0.48,
+        "recall_at_k": 0.95,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      },
+      "queries": [
+        {
+          "query_id": "Q-001",
+          "case_ids": [
+            "S-004",
+            "S-003",
+            "S-002",
+            "S-005"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-002",
+          "case_ids": [
+            "S-002",
+            "S-001",
+            "S-003"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 0.75,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-003",
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-004",
+          "case_ids": [
+            "S-007",
+            "S-008"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-005",
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-006",
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        }
+      ]
+    },
+    {
+      "summary": {
+        "candidate_depth": 5,
+        "semantic_weight": 1.0,
+        "positive_queries": 5,
+        "negative_queries": 1,
+        "precision_at_k": 0.5199999999999999,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      },
+      "queries": [
+        {
+          "query_id": "Q-001",
+          "case_ids": [
+            "S-003",
+            "S-004",
+            "S-005",
+            "S-002",
+            "S-006"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-002",
+          "case_ids": [
+            "S-002",
+            "S-001",
+            "S-003",
+            "S-006",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.8,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-003",
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002",
+            "S-003",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-004",
+          "case_ids": [
+            "S-007",
+            "S-008"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-005",
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001",
+            "S-002",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-006",
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        }
+      ]
+    },
+    {
+      "summary": {
+        "candidate_depth": 5,
+        "semantic_weight": 2.0,
+        "positive_queries": 5,
+        "negative_queries": 1,
+        "precision_at_k": 0.5199999999999999,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      },
+      "queries": [
+        {
+          "query_id": "Q-001",
+          "case_ids": [
+            "S-003",
+            "S-004",
+            "S-005",
+            "S-002",
+            "S-006"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-002",
+          "case_ids": [
+            "S-002",
+            "S-001",
+            "S-003",
+            "S-006",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.8,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-003",
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002",
+            "S-003",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-004",
+          "case_ids": [
+            "S-007",
+            "S-008"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-005",
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001",
+            "S-002",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-006",
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        }
+      ]
+    },
+    {
+      "summary": {
+        "candidate_depth": 5,
+        "semantic_weight": 3.0,
+        "positive_queries": 5,
+        "negative_queries": 1,
+        "precision_at_k": 0.5199999999999999,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      },
+      "queries": [
+        {
+          "query_id": "Q-001",
+          "case_ids": [
+            "S-004",
+            "S-003",
+            "S-005",
+            "S-002",
+            "S-006"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-002",
+          "case_ids": [
+            "S-002",
+            "S-001",
+            "S-003",
+            "S-006",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.8,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-003",
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002",
+            "S-003",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-004",
+          "case_ids": [
+            "S-007",
+            "S-008"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-005",
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001",
+            "S-002",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-006",
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        }
+      ]
+    },
+    {
+      "summary": {
+        "candidate_depth": 10,
+        "semantic_weight": 1.0,
+        "positive_queries": 5,
+        "negative_queries": 1,
+        "precision_at_k": 0.5199999999999999,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      },
+      "queries": [
+        {
+          "query_id": "Q-001",
+          "case_ids": [
+            "S-003",
+            "S-004",
+            "S-005",
+            "S-002",
+            "S-006"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-002",
+          "case_ids": [
+            "S-002",
+            "S-001",
+            "S-003",
+            "S-006",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.8,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-003",
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002",
+            "S-003",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-004",
+          "case_ids": [
+            "S-007",
+            "S-008"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-005",
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001",
+            "S-002",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-006",
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        }
+      ]
+    },
+    {
+      "summary": {
+        "candidate_depth": 10,
+        "semantic_weight": 2.0,
+        "positive_queries": 5,
+        "negative_queries": 1,
+        "precision_at_k": 0.5199999999999999,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      },
+      "queries": [
+        {
+          "query_id": "Q-001",
+          "case_ids": [
+            "S-003",
+            "S-004",
+            "S-005",
+            "S-002",
+            "S-006"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-002",
+          "case_ids": [
+            "S-002",
+            "S-001",
+            "S-003",
+            "S-006",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.8,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-003",
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002",
+            "S-003",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-004",
+          "case_ids": [
+            "S-007",
+            "S-008"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-005",
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001",
+            "S-002",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-006",
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        }
+      ]
+    },
+    {
+      "summary": {
+        "candidate_depth": 10,
+        "semantic_weight": 3.0,
+        "positive_queries": 5,
+        "negative_queries": 1,
+        "precision_at_k": 0.5199999999999999,
+        "recall_at_k": 1.0,
+        "mrr_at_k": 1.0,
+        "negative_query_return_rate": 1.0
+      },
+      "queries": [
+        {
+          "query_id": "Q-001",
+          "case_ids": [
+            "S-004",
+            "S-003",
+            "S-005",
+            "S-002",
+            "S-006"
+          ],
+          "metrics": {
+            "precision_at_k": 0.6,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-002",
+          "case_ids": [
+            "S-002",
+            "S-001",
+            "S-003",
+            "S-006",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.8,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-003",
+          "case_ids": [
+            "S-006",
+            "S-005",
+            "S-002",
+            "S-003",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-004",
+          "case_ids": [
+            "S-007",
+            "S-008"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-005",
+          "case_ids": [
+            "S-005",
+            "S-006",
+            "S-001",
+            "S-002",
+            "S-004"
+          ],
+          "metrics": {
+            "precision_at_k": 0.4,
+            "recall_at_k": 1.0,
+            "reciprocal_rank_at_k": 1.0,
+            "has_results": true,
+            "is_negative_query": false
+          }
+        },
+        {
+          "query_id": "Q-006",
+          "case_ids": [
+            "S-004",
+            "S-002",
+            "S-005",
+            "S-006",
+            "S-001"
+          ],
+          "metrics": {
+            "precision_at_k": 0.0,
+            "recall_at_k": null,
+            "reciprocal_rank_at_k": null,
+            "has_results": true,
+            "is_negative_query": true
+          }
+        }
+      ]
+    }
+  ]
+}

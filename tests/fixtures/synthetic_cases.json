@@ -1,0 +1,101 @@
+[
+  {
+    "case_id": "S-001",
+    "equipment_family": "Demo Compressor",
+    "equipment_type": "COMP-100",
+    "created_at": "2026-01-01T00:00:00Z",
+    "language": "en",
+    "customer_description": "Machine will not start; control panel has no lights.",
+    "technician_notes": "Relay coil failed. Replaced relay and verified startup.",
+    "parts_replaced": ["RELAY-DEMO"],
+    "resolution_text": "Replaced relay."
+  },
+  {
+    "case_id": "S-002",
+    "equipment_family": "Demo Compressor",
+    "equipment_type": "COMP-100",
+    "created_at": "2026-01-02T00:00:00Z",
+    "language": "de",
+    "customer_description": "Maschine startet nicht. Keine Anzeige am Display.",
+    "technician_notes": "Versorgung am Bedienfeld fehlt. Relais ersetzt.",
+    "parts_replaced": ["RELAY-DEMO"],
+    "resolution_text": "Defektes Relais ersetzt."
+  },
+  {
+    "case_id": "S-003",
+    "equipment_family": "Demo Compressor",
+    "equipment_type": "COMP-100",
+    "created_at": "2026-01-03T00:00:00Z",
+    "language": "en",
+    "customer_description": "No crank and dead panel after storage.",
+    "technician_notes": "Ground cable loose. Contactor tested OK.",
+    "parts_replaced": [],
+    "resolution_text": "Connection retorqued and treated for corrosion."
+  },
+  {
+    "case_id": "S-004",
+    "equipment_family": "Demo Compressor",
+    "equipment_type": "COMP-100",
+    "created_at": "2026-01-04T00:00:00Z",
+    "language": "en",
+    "customer_description": "No power up after overnight parking.",
+    "technician_notes": "Battery failed a load test.",
+    "parts_replaced": ["BATTERY-DEMO"],
+    "resolution_text": "Replaced battery."
+  },
+  {
+    "case_id": "S-005",
+    "equipment_family": "Demo Compressor",
+    "equipment_type": "COMP-100",
+    "created_at": "2026-01-05T00:00:00Z",
+    "language": "en",
+    "customer_description": "Overheating while running with E-207 alarm and rattling.",
+    "technician_notes": "Cooling path blocked with dust.",
+    "parts_replaced": [],
+    "resolution_text": "Cleaned cooling path."
+  },
+  {
+    "case_id": "S-006",
+    "equipment_family": "Demo Compressor",
+    "equipment_type": "COMP-100",
+    "created_at": "2026-01-06T00:00:00Z",
+    "language": "it",
+    "customer_description": "La macchina si surriscalda e mostra E207. Rumore metallico.",
+    "technician_notes": "Ventola bloccata.",
+    "parts_replaced": [],
+    "resolution_text": "Ventola ripristinata."
+  },
+  {
+    "case_id": "S-007",
+    "equipment_family": "Demo Lift",
+    "equipment_type": "LIFT-100",
+    "created_at": "2026-01-07T00:00:00Z",
+    "language": "fr",
+    "customer_description": "Fuite hydraulique au niveau du cylindre de levage.",
+    "technician_notes": "Joint endommagé.",
+    "parts_replaced": ["SEAL-DEMO"],
+    "resolution_text": "Joint remplacé."
+  },
+  {
+    "case_id": "S-008",
+    "equipment_family": "Demo Lift",
+    "equipment_type": "LIFT-100",
+    "created_at": "2026-01-08T00:00:00Z",
+    "language": "en",
+    "customer_description": "Hydraulic leak from the lifting cylinder; slow drip.",
+    "technician_notes": "Seal damaged.",
+    "parts_replaced": ["SEAL-DEMO"],
+    "resolution_text": "Replaced seal."
+  },
+  {
+    "case_id": "S-009",
+    "equipment_family": "Demo Compressor",
+    "equipment_type": "COMP-200",
+    "created_at": "2026-01-09T00:00:00Z",
+    "language": "en",
+    "customer_description": "Similar model overheats when working with E207.",
+    "technician_notes": "Fan obstruction removed.",
+    "parts_replaced": [],
+    "resolution_text": "Cleared fan obstruction."
+  }
+]

@@ -1,0 +1,105 @@
+{
+  "created_at": "2026-10-05T01:11:12.617124+00:00",
+  "query_id": "D-001",
+  "model": "qwen2.5:7b",
+  "input_mode": "fixed_evaluation_candidates",
+  "evaluation_definition": {
+    "query_id": "D-001",
+    "language": "en",
+    "equipment_type": "CX-450",
+    "query": "The machine will not start. There are no lights on the control panel. The customer says it was working yesterday, but it is completely dead today. No error code was noticed.",
+    "candidate_case_ids": [
+      "C-48934",
+      "C-48211",
+      "C-49040",
+      "C-48377",
+      "C-48590"
+    ],
+    "relevant_case_ids": [
+      "C-48211",
+      "C-49040",
+      "C-48377",
+      "C-48590"
+    ],
+    "irrelevant_case_ids": [
+      "C-48934"
+    ],
+    "expected_cause_groups": [
+      {
+        "description": "Main contactor failure",
+        "supporting_case_ids": [
+          "C-48211",
+          "C-48377"
+        ]
+      },
+      {
+        "description": "Failed battery",
+        "supporting_case_ids": [
+          "C-49040"
+        ]
+      },
+      {
+        "description": "Loose or corroded ground connection",
+        "supporting_case_ids": [
+          "C-48590"
+        ]
+      }
+    ],
+    "review_checks": [
+      "Do not suggest a blocked intake screen from the overheating case.",
+      "Do not infer an intermittent fault from working yesterday and failing today.",
+      "Do not treat contactor tested OK as evidence against the ground connection.",
+      "Do not claim a successful repair unless the source records it.",
+      "Every cause must cite supplied evidence with an exact quote.",
+      "Any follow-up question must be suitable for a customer without tools."
+    ]
+  },
+  "manual_review": "pending",
+  "generation_status": "validated",
+  "citation_checks": {
+    "supplied_case_ids_and_exact_quotes": "passed",
+    "irrelevant_cases_cited": []
+  },
+  "draft": {
+    "summary": "The machine will not start, and there are no lights on the control panel. It was working yesterday but is completely dead today. No error codes were noticed.",
+    "possible_causes": [
+      {
+        "cause": "Main contactor failure",
+        "explanation": "The machine has a history of not starting due to a main contactor issue. In case C-48211, the main contactor coil was open, and replacing it resolved the issue.",
+        "evidence": [
+          {
+            "case_id": "C-48211",
+            "field": "technician_notes",
+            "quote": "No power to panel. Main contactor coil open. Swapped contactor, unit runs."
+          }
+        ]
+      },
+      {
+        "cause": "Battery failure",
+        "explanation": "In case C-49040, the machine was dead on arrival due to a flat battery. Replacing the battery resolved the issue.",
+        "evidence": [
+          {
+            "case_id": "C-49040",
+            "field": "resolution_text",
+            "quote": "Failed battery replaced."
+          }
+        ]
+      },
+      {
+        "cause": "Ground strap issue",
+        "explanation": "Case C-48590 describes a similar issue where a loose ground strap caused the machine to be dead. Cleaning and retorquing the ground strap resolved the problem.",
+        "evidence": [
+          {
+            "case_id": "C-48590",
+            "field": "technician_notes",
+            "quote": "Ground strap at frame was loose, heavy corrosion. Cleaned and retorqued. Contactor tested OK."
+          }
+        ]
+      }
+    ],
+    "follow_up_question": "Has the battery been flat or needed charging recently?",
+    "limitations": [
+      "The machine was working yesterday, which does not definitively indicate an intermittent fault."
+    ]
+  }
+}

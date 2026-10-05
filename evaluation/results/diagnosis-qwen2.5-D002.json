@@ -1,0 +1,75 @@
+{
+  "created_at": "2026-10-05T01:20:18.624669+00:00",
+  "query_id": "D-002",
+  "model": "qwen2.5:7b",
+  "input_mode": "fixed_evaluation_candidates",
+  "evaluation_definition": {
+    "query_id": "D-002",
+    "language": "en",
+    "equipment_type": "CX-450",
+    "query": "The customer disputes the invoice for the previous service visit and requests a callback from the account manager. No machine fault is being reported.",
+    "candidate_case_ids": [
+      "C-48934",
+      "C-48211",
+      "C-49040",
+      "C-48377",
+      "C-48590"
+    ],
+    "relevant_case_ids": [],
+    "irrelevant_case_ids": [
+      "C-48934",
+      "C-48211",
+      "C-49040",
+      "C-48377",
+      "C-48590"
+    ],
+    "expected_cause_groups": [],
+    "review_checks": [
+      "Summarize the billing request without inventing machine symptoms.",
+      "Return an empty possible_causes list.",
+      "Do not cite historical repairs as explanations for a billing request.",
+      "Do not ask a diagnostic follow-up question.",
+      "Explain that the request does not provide a machine problem to diagnose."
+    ]
+  },
+  "manual_review": "pending",
+  "generation_status": "validated",
+  "citation_checks": {
+    "supplied_case_ids_and_exact_quotes": "passed",
+    "irrelevant_cases_cited": [
+      "C-48590",
+      "C-49040"
+    ]
+  },
+  "draft": {
+    "summary": "The customer disputes the invoice for the previous service visit and requests a callback from the account manager. No machine fault is being reported.",
+    "possible_causes": [
+      {
+        "cause": "Battery issue",
+        "explanation": "Case C-49040 shows a similar issue where the unit was dead on arrival and the battery was flat. The battery was replaced and the charging system was found to be OK.",
+        "evidence": [
+          {
+            "case_id": "C-49040",
+            "field": "resolution_text",
+            "quote": "Failed battery replaced."
+          }
+        ]
+      },
+      {
+        "cause": "Contactor failure",
+        "explanation": "Case C-48590 describes a similar issue where the main contactor was tested and found to be OK, but the ground strap was loose and corroded. This suggests a potential issue with the contactor or related components.",
+        "evidence": [
+          {
+            "case_id": "C-48590",
+            "field": "technician_notes",
+            "quote": "Ground strap at frame was loose, heavy corrosion. Cleaned and retorqued. Contactor tested OK."
+          }
+        ]
+      }
+    ],
+    "follow_up_question": null,
+    "limitations": [
+      "The customer has not reported any machine fault, which limits the scope of the possible causes."
+    ]
+  }
+}

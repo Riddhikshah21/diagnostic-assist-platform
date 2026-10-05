@@ -1,13 +1,19 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 
 import {
   createSession,
+  generateSessionDiagnosis,
   loadSession,
   loadSessionEvidence,
   saveObservation,
 } from './api'
-import type { DiagnosticSession, SearchResponse } from './api'
+
+import type {
+  DiagnosticResult,
+  DiagnosticSession,
+  SearchResponse,
+} from './api'
 
 export default function App() {
   const [equipment, setEquipment] = useState('CX-450')
@@ -25,6 +31,19 @@ export default function App() {
 
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+
+  const [diagnosis, setDiagnosis] = useState<DiagnosticResult | null>(null)
+  const [diagnosisBusy, setDiagnosisBusy] = useState(false)
+  const [diagnosisError, setDiagnosisError] = useState('')
+
+  const generationId = useRef(0)
+  const generationInFlight = useRef(false)
+
+  function invalidateDiagnosis() {
+    generationId.current += 1
+    setDiagnosis(null)
+    setDiagnosisError('')
+  }
 
   function rememberSession(sessionId: string) {
     setReopenId(sessionId)
@@ -44,13 +63,16 @@ export default function App() {
       response.session_id !== saved.session_id ||
       response.revision !== saved.revision
     ) {
-      throw new Error('The session changed. Reopen it to load the latest information.')
+      throw new Error(
+        'The session changed. Reopen it to load the latest information.',
+      )
     }
 
     setResult(response.evidence)
   }
 
   async function run(action: () => Promise<void>) {
+    invalidateDiagnosis()
     setBusy(true)
     setError('')
     setResult(null)
@@ -81,6 +103,7 @@ export default function App() {
         equipment.trim(),
         description.trim(),
       )
+
       await showSession(saved)
     })
   }
@@ -95,9 +118,11 @@ export default function App() {
 
     void run(async () => {
       const saved = await loadSession(reopenId.trim())
+
       setQuestion('')
       setAnswer('')
       setIsUnknown(false)
+
       await showSession(saved)
     })
   }
@@ -134,7 +159,53 @@ export default function App() {
     })
   }
 
+  async function handleDiagnosis() {
+    if (!session || busy || generationInFlight.current) return
+
+    const snapshot = session
+    const requestId = ++generationId.current
+
+    generationInFlight.current = true
+    setDiagnosisBusy(true)
+    setDiagnosisError('')
+    setDiagnosis(null)
+
+    try {
+      const response = await generateSessionDiagnosis(snapshot.session_id)
+
+      if (generationId.current !== requestId) return
+
+      const latest = await loadSession(snapshot.session_id)
+
+      if (generationId.current !== requestId) return
+
+      if (
+        response.session_id !== snapshot.session_id ||
+        response.revision !== snapshot.revision ||
+        latest.revision !== snapshot.revision
+      ) {
+        throw new Error(
+          'The session changed. Refresh it before generating suggestions again.',
+        )
+      }
+
+      setDiagnosis(response.result)
+    } catch (problem) {
+      if (generationId.current === requestId) {
+        setDiagnosisError(
+          problem instanceof Error
+            ? problem.message
+            : 'Suggestions are temporarily unavailable.',
+        )
+      }
+    } finally {
+      generationInFlight.current = false
+      setDiagnosisBusy(false)
+    }
+  }
+
   function startNewCase() {
+    invalidateDiagnosis()
     setSession(null)
     setResult(null)
     setDescription('')
@@ -149,6 +220,11 @@ export default function App() {
     url.searchParams.delete('session')
     window.history.replaceState(null, '', url)
   }
+
+  const readyDraft =
+    diagnosis?.status === 'draft_ready' ? diagnosis.draft : null
+
+  const suggestedQuestion = readyDraft?.follow_up_question ?? null
 
   return (
     <main className="workspace">
@@ -216,8 +292,10 @@ export default function App() {
                 type="button"
                 disabled={busy}
                 onClick={() => {
+                  const sessionId = session.session_id
+
                   void run(async () => {
-                    await showSession(await loadSession(session.session_id))
+                    await showSession(await loadSession(sessionId))
                   })
                 }}
               >
@@ -242,7 +320,10 @@ export default function App() {
             )}
 
             {session.observations.map((observation) => (
-              <div className="observation" key={observation.observation_id}>
+              <div
+                className="observation"
+                key={observation.observation_id}
+              >
                 <strong>
                   {observation.question || 'Additional observation'}
                 </strong>
@@ -295,7 +376,126 @@ export default function App() {
         </>
       )}
 
-      {error && <p className="error" role="alert">{error}</p>}
+      {session && result && (
+        <section className="panel" aria-busy={diagnosisBusy}>
+          <h2>Diagnostic suggestions</h2>
+          <p className="muted">
+            AI-generated drafts need review. The technician confirms
+            the diagnosis.
+          </p>
+
+          <button
+            type="button"
+            disabled={busy || diagnosisBusy}
+            onClick={() => void handleDiagnosis()}
+          >
+            {diagnosisBusy ? 'Generating…' : 'Generate suggestions'}
+          </button>
+
+          <div aria-live="polite">
+            {diagnosisBusy && (
+              <p>
+                A generation request is in progress. Historical evidence
+                remains available.
+              </p>
+            )}
+
+            {diagnosisError && (
+              <p className="error" role="alert">
+                {diagnosisError} Historical evidence remains available below.
+              </p>
+            )}
+
+            {diagnosis?.status === 'unavailable' && (
+              <p className="notice">
+                {diagnosis.message ||
+                  'Suggestions are temporarily unavailable.'}
+              </p>
+            )}
+
+            {readyDraft && (
+              <>
+                <h3>Reported problem</h3>
+                <p>{readyDraft.summary}</p>
+
+                {readyDraft.possible_causes.length === 0 && (
+                  <p>No diagnostic causes were suggested.</p>
+                )}
+
+                {readyDraft.possible_causes.map((cause, index) => (
+                  <article key={`${cause.cause}-${index}`}>
+                    <h3>{cause.cause}</h3>
+
+                    {cause.evidence.map((reference, referenceIndex) => (
+                      <blockquote
+                        key={`${reference.case_id}-${referenceIndex}`}
+                      >
+                        <p>{reference.quote}</p>
+                        <footer>
+                          Historical case {reference.case_id}
+                          {' · '}
+                          {reference.field === 'technician_notes'
+                            ? 'Technician notes'
+                            : 'Recorded resolution'}
+                        </footer>
+                      </blockquote>
+                    ))}
+                  </article>
+                ))}
+
+                {suggestedQuestion && (
+                  <div className="observation">
+                    <h3>Suggested follow-up</h3>
+                    <p>{suggestedQuestion}</p>
+
+                    {session.status === 'active' && (
+                      <button
+                        type="button"
+                        disabled={
+                          busy ||
+                          Boolean(question.trim()) ||
+                          Boolean(answer.trim()) ||
+                          isUnknown
+                        }
+                        onClick={() => {
+                          setQuestion(suggestedQuestion)
+                          setAnswer('')
+                          setIsUnknown(false)
+                        }}
+                      >
+                        Use this question
+                      </button>
+                    )}
+
+                    <p className="muted">
+                      Ask the customer, then record their answer in
+                      Add information. Clear any unfinished entry before
+                      selecting this question.
+                    </p>
+                  </div>
+                )}
+
+                {readyDraft.limitations.length > 0 && (
+                  <>
+                    <h3>Limitations</h3>
+                    <ul>
+                      {readyDraft.limitations.map((limitation, index) => (
+                        <li key={index}>{limitation}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </section>
+      )}
+
+      {error && (
+        <p className="error" role="alert">
+          {error}
+        </p>
+      )}
 
       <section aria-live="polite" aria-busy={busy}>
         {busy && <p>Loading session and evidence…</p>}
@@ -308,7 +508,9 @@ export default function App() {
             </p>
 
             {result.warnings.map((warning) => (
-              <p className="notice" key={warning}>{warning}</p>
+              <p className="notice" key={warning}>
+                {warning}
+              </p>
             ))}
 
             {result.hits.length === 0 && (

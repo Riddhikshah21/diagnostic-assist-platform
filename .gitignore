@@ -14,3 +14,5 @@ build/
 node_modules/
 data/Diagnostic Assist Take-Home.docx
 .env
+*/evaluation/results/
+*.json

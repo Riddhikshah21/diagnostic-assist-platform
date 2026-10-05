@@ -1,0 +1,63 @@
+{
+  "created_at": "2026-10-05T01:42:18.186112+00:00",
+  "query_id": "D-001",
+  "model": "qwen2.5:7b",
+  "input_mode": "fixed_evaluation_candidates",
+  "evaluation_definition": {
+    "query_id": "D-001",
+    "language": "en",
+    "equipment_type": "CX-450",
+    "query": "The machine will not start. There are no lights on the control panel. The customer says it was working yesterday, but it is completely dead today. No error code was noticed.",
+    "candidate_case_ids": [
+      "C-48934",
+      "C-48211",
+      "C-49040",
+      "C-48377",
+      "C-48590"
+    ],
+    "relevant_case_ids": [
+      "C-48211",
+      "C-49040",
+      "C-48377",
+      "C-48590"
+    ],
+    "irrelevant_case_ids": [
+      "C-48934"
+    ],
+    "expected_cause_groups": [
+      {
+        "description": "Main contactor failure",
+        "supporting_case_ids": [
+          "C-48211",
+          "C-48377"
+        ]
+      },
+      {
+        "description": "Failed battery",
+        "supporting_case_ids": [
+          "C-49040"
+        ]
+      },
+      {
+        "description": "Loose or corroded ground connection",
+        "supporting_case_ids": [
+          "C-48590"
+        ]
+      }
+    ],
+    "review_checks": [
+      "Do not suggest a blocked intake screen from the overheating case.",
+      "Do not infer an intermittent fault from working yesterday and failing today.",
+      "Do not treat contactor tested OK as evidence against the ground connection.",
+      "Do not claim a successful repair unless the source records it.",
+      "Every cause must cite supplied evidence with an exact quote.",
+      "Any follow-up question must be suitable for a customer without tools."
+    ]
+  },
+  "manual_review": "pending",
+  "generation_status": "failed",
+  "error": "The model could not return a valid diagnostic draft.",
+  "error_type": "OllamaError",
+  "error_details": "The local model timed out.",
+  "draft": null
+}

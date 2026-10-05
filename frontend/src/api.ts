@@ -149,3 +149,50 @@ export function saveObservation(
     },
   )
 }
+export interface EvidenceReference {
+  case_id: string
+  field: 'technician_notes' | 'resolution_text'
+  quote: string
+}
+
+export interface CauseSuggestion {
+  cause: string
+  explanation: string
+  evidence: EvidenceReference[]
+}
+
+export interface DiagnosticDraft {
+  summary: string
+  possible_causes: CauseSuggestion[]
+  follow_up_question: string | null
+  limitations: string[]
+}
+
+export type DiagnosticResult =
+  | {
+      status: 'draft_ready'
+      evidence: SearchResponse
+      draft: DiagnosticDraft
+      message: string | null
+    }
+  | {
+      status: 'unavailable'
+      evidence: SearchResponse
+      draft: null
+      message: string | null
+    }
+
+export interface SessionDiagnosticResponse {
+  session_id: string
+  revision: number
+  result: DiagnosticResult
+}
+
+export function generateSessionDiagnosis(
+  sessionId: string,
+): Promise<SessionDiagnosticResponse> {
+  return sessionRequest(
+    `/sessions/${encodeURIComponent(sessionId)}/diagnosis`,
+    { method: 'POST' },
+  )
+}

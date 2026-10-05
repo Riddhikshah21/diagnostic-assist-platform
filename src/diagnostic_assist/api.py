@@ -26,6 +26,13 @@ from diagnostic_assist.sessions import (
     SessionClosedError,
     add_observation,
 )
+from threading import Lock
+
+from diagnostic_assist.ollama_client import OllamaClient
+from diagnostic_assist.session_diagnosis import (
+    SessionDiagnosticResponse,
+    prepare_session_diagnosis,
+)
 from fastapi import Query
 
 from diagnostic_assist.session_models import SessionEvidenceResponse
@@ -71,7 +78,10 @@ async def lifespan(app: FastAPI):
         app.state.engine = engine
         app.state.embedder = embedder
         app.state.organisation_id = organisation_id
-
+        app.state.ollama_client = OllamaClient(
+            model=os.getenv("OLLAMA_MODEL", "qwen2.5:7b"),
+        )
+        app.state.diagnosis_lock = Lock()
         yield
     finally:
         engine.dispose()
@@ -230,3 +240,46 @@ def get_diagnostic_evidence(
             status_code=503,
             detail="Unable to retrieve session evidence.",
         ) from None
+
+@app.post(
+    "/sessions/{session_id}/diagnosis",
+    response_model=SessionDiagnosticResponse,
+)
+def generate_session_diagnosis(
+    session_id: UUID,
+    request: Request,
+) -> SessionDiagnosticResponse:
+    state = request.app.state
+
+    if not state.diagnosis_lock.acquire(blocking=False):
+        raise HTTPException(
+            status_code=429,
+            detail="Diagnostic generation is busy. Try again shortly.",
+        )
+
+    try:
+        return prepare_session_diagnosis(
+            engine=state.engine,
+            embedder=state.embedder,
+            client=state.ollama_client,
+            organisation_id=state.organisation_id,
+            session_id=session_id,
+        )
+    except SessionNotFoundError:
+        raise HTTPException(
+            status_code=404,
+            detail="Session not found.",
+        ) from None
+    except SessionChangedError:
+        raise HTTPException(
+            status_code=409,
+            detail="Session changed during generation. Refresh and retry.",
+        ) from None
+    except SQLAlchemyError:
+        logger.exception("Session diagnosis database operation failed")
+        raise HTTPException(
+            status_code=503,
+            detail="Unable to load session information.",
+        ) from None
+    finally:
+        state.diagnosis_lock.release()

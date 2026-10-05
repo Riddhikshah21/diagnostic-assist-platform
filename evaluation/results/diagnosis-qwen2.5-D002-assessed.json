@@ -1,0 +1,49 @@
+{
+  "created_at": "2026-10-05T01:28:33.028952+00:00",
+  "query_id": "D-002",
+  "model": "qwen2.5:7b",
+  "input_mode": "fixed_evaluation_candidates",
+  "evaluation_definition": {
+    "query_id": "D-002",
+    "language": "en",
+    "equipment_type": "CX-450",
+    "query": "The customer disputes the invoice for the previous service visit and requests a callback from the account manager. No machine fault is being reported.",
+    "candidate_case_ids": [
+      "C-48934",
+      "C-48211",
+      "C-49040",
+      "C-48377",
+      "C-48590"
+    ],
+    "relevant_case_ids": [],
+    "irrelevant_case_ids": [
+      "C-48934",
+      "C-48211",
+      "C-49040",
+      "C-48377",
+      "C-48590"
+    ],
+    "expected_cause_groups": [],
+    "review_checks": [
+      "Summarize the billing request without inventing machine symptoms.",
+      "Return an empty possible_causes list.",
+      "Do not cite historical repairs as explanations for a billing request.",
+      "Do not ask a diagnostic follow-up question.",
+      "Explain that the request does not provide a machine problem to diagnose."
+    ]
+  },
+  "manual_review": "pending",
+  "generation_status": "validated",
+  "citation_checks": {
+    "supplied_case_ids_and_exact_quotes": "passed",
+    "irrelevant_cases_cited": []
+  },
+  "draft": {
+    "summary": "The customer disputes the invoice for the previous service visit and requests a callback from the account manager. No machine fault is being reported.",
+    "possible_causes": [],
+    "follow_up_question": null,
+    "limitations": [
+      "This request does not describe a machine problem for the diagnostic assistant to investigate."
+    ]
+  }
+}

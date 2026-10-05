@@ -1,0 +1,108 @@
+{
+  "created_at": "2026-10-05T01:00:45.816857+00:00",
+  "query_id": "D-001",
+  "model": "llama3.1:latest",
+  "input_mode": "fixed_evaluation_candidates",
+  "evaluation_definition": {
+    "query_id": "D-001",
+    "language": "en",
+    "equipment_type": "CX-450",
+    "query": "The machine will not start. There are no lights on the control panel. The customer says it was working yesterday, but it is completely dead today. No error code was noticed.",
+    "candidate_case_ids": [
+      "C-48934",
+      "C-48211",
+      "C-49040",
+      "C-48377",
+      "C-48590"
+    ],
+    "relevant_case_ids": [
+      "C-48211",
+      "C-49040",
+      "C-48377",
+      "C-48590"
+    ],
+    "irrelevant_case_ids": [
+      "C-48934"
+    ],
+    "expected_cause_groups": [
+      {
+        "description": "Main contactor failure",
+        "supporting_case_ids": [
+          "C-48211",
+          "C-48377"
+        ]
+      },
+      {
+        "description": "Failed battery",
+        "supporting_case_ids": [
+          "C-49040"
+        ]
+      },
+      {
+        "description": "Loose or corroded ground connection",
+        "supporting_case_ids": [
+          "C-48590"
+        ]
+      }
+    ],
+    "review_checks": [
+      "Do not suggest a blocked intake screen from the overheating case.",
+      "Do not infer an intermittent fault from working yesterday and failing today.",
+      "Do not treat contactor tested OK as evidence against the ground connection.",
+      "Do not claim a successful repair unless the source records it.",
+      "Every cause must cite supplied evidence with an exact quote.",
+      "Any follow-up question must be suitable for a customer without tools."
+    ]
+  },
+  "manual_review": "pending",
+  "generation_status": "validated",
+  "citation_checks": {
+    "supplied_case_ids_and_exact_quotes": "passed",
+    "irrelevant_cases_cited": [
+      "C-48934"
+    ]
+  },
+  "draft": {
+    "summary": "The machine won't start and has no lights on the control panel. It was working yesterday but is completely dead today.",
+    "possible_causes": [
+      {
+        "cause": "Blocked intake screen restricting airflow",
+        "explanation": "Historical case C-48934: The machine overheated under load due to a blocked intake screen. The technician cleaned the screen and fins, and temperatures returned to normal.",
+        "evidence": [
+          {
+            "case_id": "C-48934",
+            "field": "technician_notes",
+            "quote": "Cooling fan running but airflow low, intake screen packed with dust. Cleaned screen and fins. Temps back to normal."
+          }
+        ]
+      },
+      {
+        "cause": "Main contactor coil open",
+        "explanation": "Historical case C-48211: The unit wouldn't start at all due to a main contactor coil open. The technician swapped the contactor, and the unit ran.",
+        "evidence": [
+          {
+            "case_id": "C-48211",
+            "field": "technician_notes",
+            "quote": "No power to panel. Main contactor coil open. Swapped contactor, unit runs."
+          }
+        ]
+      },
+      {
+        "cause": "Failed battery",
+        "explanation": "Historical case C-49040: The unit was dead on arrival due to a flat battery. The technician charged and load tested the battery, which failed the test. The battery was replaced.",
+        "evidence": [
+          {
+            "case_id": "C-49040",
+            "field": "resolution_text",
+            "quote": "Failed battery replaced."
+          }
+        ]
+      }
+    ],
+    "follow_up_question": "Has the battery been flat or needed charging recently?",
+    "limitations": [
+      "The customer reported no error code, so we cannot confirm if it's related to any of the possible causes.",
+      "The machine was working yesterday, but it's completely dead today, which doesn't establish an intermittent fault."
+    ]
+  }
+}
